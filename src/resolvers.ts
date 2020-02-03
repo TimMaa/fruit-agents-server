@@ -7,7 +7,10 @@ export const resolvers = {
   Query: {
     agent: (_obj, args: agentArgs) => agents.find(a => a.id === args.id),
     agents: (_obj, args: agentsArgs) => args.name ? agents.filter(a => a.name.toLowerCase().includes(args.name.toLowerCase())) : agents,
-    missions: (active: boolean) => missions,
+    missions: () => missions,
+    activeMission: () => missions.find(m => moment(m.end, 'X') > moment() && moment(m.start, 'X') < moment()),
+    previousMission: () => missions.find(m => moment(m.end, 'X') < moment()),
+    nextMission: () => missions.find(m => moment(m.start, 'X') > moment()),
   },
   Agent: {
     averageRating: (obj: Agent) => {
@@ -19,7 +22,8 @@ export const resolvers = {
     ratings: (obj: Agent) => ratings.filter(r => r.agentId === obj.id),
   },
   Mission: {
-    averageRating: (obj: Agent) => {
+    agent: (obj: Mission) => agents.find(a => a.id === obj.agentId),
+    averageRating: (obj: Mission) => {
       const missionRatings = ratings.filter(r => r.missionId === obj.id).map(r => r.score);
       return (missionRatings.reduce((cur, acc) => cur + acc, 0) / missionRatings.length).toFixed(2)
     },

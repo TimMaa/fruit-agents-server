@@ -34,7 +34,10 @@ export const typeDefs = gql`
   type Query {
     agents(name: String): [Agent]
     agent(id: ID): Agent
-    missions(active: Boolean): [Mission]
+    missions: [Mission]
+    nextMission: Mission
+    previousMission: Mission
+    activeMission: Mission 
   }
 `;
 
