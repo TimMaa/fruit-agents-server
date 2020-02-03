@@ -9,7 +9,10 @@ export const typeDefs = gql`
     image: String
     photoUrl: String
     missions: [Mission!]
+    previousMission: Mission
+    nextMission: Mission
     averageRating: Float
+    latestRating: Float
     ratings: [Rating!]
   }
 
