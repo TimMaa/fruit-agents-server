@@ -1,7 +1,8 @@
 import moment from 'moment';
+import uuid from 'uuid/v4'
 
 import { agents, missions, ratings } from './mockdata';
-import { Agent, Mission } from './interfaces';
+import { Agent, Mission, Rating } from './interfaces';
 
 export const resolvers = {
   Query: {
@@ -28,6 +29,17 @@ export const resolvers = {
       return (missionRatings.reduce((cur, acc) => cur + acc, 0) / missionRatings.length).toFixed(2)
     },
     ratings: (obj: Mission) => ratings.filter(r => r.missionId === obj.id),
+  },
+  Mutation: {
+    addRating: (_obj, args: addRatingArgs) => {
+      ratings.push({
+        id: uuid(),
+        score: args.score,
+        date: moment().unix().toString(),
+        missionId: args.missionId,
+        agentId: missions.find(m => m.id === args.missionId).agentId
+      });
+    }
   }
 }
 
@@ -37,4 +49,9 @@ interface agentArgs {
 
 interface agentsArgs {
   name: string
+}
+
+interface addRatingArgs {
+  missionId: string
+  score: number
 }

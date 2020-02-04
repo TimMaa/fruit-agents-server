@@ -4,7 +4,7 @@ export const typeDefs = gql`
   scalar Date
 
   type Agent{
-    id: ID!
+    id: String!
     name: String!
     image: String
     photoUrl: String
@@ -17,7 +17,7 @@ export const typeDefs = gql`
   }
 
   type Mission{
-    id: ID!
+    id: String!
     start: String!
     end: String!
     ratings: [Rating!]
@@ -26,7 +26,7 @@ export const typeDefs = gql`
   }
 
   type Rating{
-    id: ID!
+    id: String!
     score: Int!
     created: Date!
   }
@@ -38,6 +38,10 @@ export const typeDefs = gql`
     nextMission: Mission
     previousMission: Mission
     activeMission: Mission 
+  }
+
+  type Mutation {
+    addRating(score: Int, missionId: String): Rating
   }
 `;
 
